@@ -7,11 +7,15 @@ import numpy as np
 df = pd.read_csv('medical_examination.csv')
 
 # 2
-df['overweight'] = 0 if (df['weight'] / ((df['height'] / 100) ** 2)) <= 25 else 1
+#df['overweight'] = (df['weight'] / ((df['height'] / 100) ** 2) > 25).astype(int)
+df['overweight'] = np.where(df['weight'] / ((df['height'] / 100) ** 2) > 25, 1, 0)
+
 
 # 3
-df['cholesterol'] = 0 if df['cholesterol'] == 1 else 1
-df['gluc'] = 0 if df['gluc'] == 1 else 1
+#df['cholesterol'] = (df['cholesterol'] > 1).astype(int)
+df['cholesterol'] = np.where(df['cholesterol'] > 1, 1, 0)
+#df['gluc'] = (df['gluc'] > 1).astype(int)
+df['gluc'] = np.where(df['gluc'] > 1, 1, 0)
 
 
 # 4
@@ -25,11 +29,11 @@ def draw_cat_plot():
     
 
     # 7
-    ctplt = sns.catplot(data=df_cat, x='cardio', y='count', hue='item', kind='bar')
+    ctplt = sns.catplot(data=df_cat, x='item', y='total', hue='measure', kind='bar', col='cardio')
 
 
     # 8
-    fig = ctplt.figure
+    fig = ctplt.fig
 
 
     # 9
